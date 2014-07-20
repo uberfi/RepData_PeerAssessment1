@@ -186,3 +186,7 @@ xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.
 ```
 
 # The End
+
+### Submitted on Sunday July 20, 2014
+#### GitHub: https://github.com/uberfi/RepData_PeerAssessment1
+#### SHA-1: 864e2a50ffe26f8d320d5ce3ea135df834253959
