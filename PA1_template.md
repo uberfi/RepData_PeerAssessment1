@@ -1,5 +1,8 @@
 # Reproducible Research: Peer Assessment 1
 
+Cos D. Fi
+Data Science Track - JHS
+August 2014
 
 ## Loading and preprocessing the data
 
@@ -14,16 +17,17 @@ X$steps <- as.numeric(X$steps)
 X$date <- as.Date(X$date, format="%Y-%m-%d")
 X$interval <- as.numeric(X$interval)
 
-str(X)
-summary(X)
+#The following are used to surpress printing of additional review of the data
+#str(X)
+#summary(X)
 
-summary(X$interval)
+#summary(X$interval)
 
-X$interval <- format(X$interval, width = 4, format = "d", flag = "0")
-summary(X$interval)
+#X$interval <- format(X$interval, width = 4, format = "d", flag = "0")
+#summary(X$interval)
 
-X$interval = as.factor(X$interval)
-summary(X$interval)
+#X$interval = as.factor(X$interval)
+#summary(X$interval)
 
 ```
 
@@ -33,10 +37,17 @@ summary(X$interval)
 library(plyr)
 
 totalStepsDay <- na.omit(ddply(X, "date", summarise, TotalSteps = sum(steps, na.rm=TRUE)))
-totalStepsDay
+#totalStepsDay
+```
+### Histogram of Total Steps per Day
+
+```{r}
 
 hist(totalStepsDay$TotalSteps, breaks = 10, main = ("Histogram of Total Steps per Day"), xlab = "Total Steps per Day", ylab = "Number of Days", col = "lightblue", border = "pink")
 
+```
+
+```{r}
 meanStepsDay <- na.omit(ddply(X, "date", summarise, MeanSteps = mean(steps, na.rm=TRUE)))
 ```
 
@@ -74,7 +85,7 @@ maxAvgStepsInterval[nrow(maxAvgStepsInterval), ]
 ## Here we visualize the avearge daily activity pattern
 
 ```{r}
-plot(meanStepsInterval, type="l", lwd=2)
+plot(meanStepsInterval, type="l")
 
 #http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html
 meanStepstimeseries <- ts(meanStepsInterval$AvgSteps, start = 0, end = 288)
@@ -88,9 +99,9 @@ plot.ts(meanStepstimeseries, xlab = "Time in 5 minute intervals")
 # Missing Values
 
 Y <- sapply(X, function(x) sum(is.na(x)))
-Y
+#Y
 Y <- Y[Y>0] # To count only missing values
-Y
+#Y
 
 mean(is.na(X$steps))
 count <- table(is.na(X$steps))
@@ -102,12 +113,12 @@ barplot(count)
 
 ```{r}
 Z <- X[is.na(X$steps), ]
-Z
+#Z
 
 #tail(X)  # checking the later rows of X to make sure that the subetting worked
 ```
 
-#### further recoding
+#### Further Recoding of the data
 
 ```{r}
 library(lubridate)
@@ -116,7 +127,15 @@ library(lubridate)
 
 #The missing values do not "seem" to be related to a day of the week
 #Except there are no missing values for Tuesdays
+```
+
+#### Missing values by day of the week
+```{r}
 table(weekdays(Z$date))
+```
+
+#### Compare with the count of observations by day of the week
+```{r}
 table(weekdays(X$date))
 ```
 
@@ -171,22 +190,15 @@ X$weekdays <- gsub1(from1, to1, X$weekdays)
 X$weekdays <- gsub1(from2, to2, X$weekdays)
 
 X$weekdays <- as.factor(X$weekdays)
-str(X)
+#str(X)
 
 library(lattice)
 
 meanStepsIntDay <- na.omit(ddply(X, c("interval", "weekdays"), summarise, AvgSteps = mean(steps2, na.rm=TRUE)))
-meanStepsIntDay
+#meanStepsIntDay
 
-xlimits <- as.numeric(X$interval)
-#xlimits # Surpressed printing
-
-xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.8, col="red"), xlim = xlimits, layout = c(1,2), type= "l", xlab = "Interval", ylab = "Average Number of Steps")
+xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.8, col="red"), xlim = c(0, range(X$interval)), layout = c(1,2), type= "l", xlab = "Interval", ylab = "Average Number of Steps")
 
 ```
 
 # The End
-
-### Submitted on Sunday July 20, 2014
-#### GitHub: https://github.com/uberfi/RepData_PeerAssessment1
-#### SHA-1: 864e2a50ffe26f8d320d5ce3ea135df834253959
