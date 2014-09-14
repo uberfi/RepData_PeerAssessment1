@@ -94,9 +94,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>What is mean and median number of steps taken per day?</h2>
 <p>```{r} library(plyr)</p>
 <p>totalStepsDay &lt;- na.omit(ddply(X, “date”, summarise, TotalSteps = sum(steps, na.rm=TRUE))) #totalStepsDay ``` ### Histogram of Total Steps per Day</p>
-<p>```{r}</p>
-<p>hist(totalStepsDay$TotalSteps, breaks = 10, main = (“Histogram of Total Steps per Day”), xlab = “Total Steps per Day”, ylab = “Number of Days”, col = “lightblue”, border = “pink”)</p>
-<p>```</p>
+<p><code>{r} hist(totalStepsDay$TotalSteps, breaks = 10, main = (&quot;Histogram of Total Steps per Day&quot;), xlab = &quot;Total Steps per Day&quot;, ylab = &quot;Number of Days&quot;, col = &quot;lightblue&quot;, border = &quot;pink&quot;)</code></p>
 <p><code>{r} meanStepsDay &lt;- na.omit(ddply(X, &quot;date&quot;, summarise, MeanSteps = mean(steps, na.rm=TRUE)))</code></p>
 <div id="mean-steps-per-day" class="section level3">
 <h3>Mean Steps per Day</h3>
@@ -114,44 +112,23 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>maxAvgStepsInterval &lt;- ddply(meanStepsInterval, “AvgSteps”, function(dat) dat[order(dat$AvgSteps), ]) ```</p>
 <div id="here-is-the-max-avergae-steps-and-its-interval" class="section level3">
 <h3>Here is the max avergae steps and its interval</h3>
-<p>```{r} maxAvgStepsInterval[nrow(maxAvgStepsInterval), ]</p>
-<p>```</p>
+<p><code>{r} maxAvgStepsInterval[nrow(maxAvgStepsInterval), ]</code></p>
 </div>
 </div>
 <div id="here-we-visualize-the-avearge-daily-activity-pattern" class="section level2">
 <h2>Here we visualize the avearge daily activity pattern</h2>
-<p>```{r} plot(meanStepsInterval, type=“l”)</p>
+<p><code>{r} plot(meanStepsInterval, type=&quot;l&quot;) #http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html meanStepstimeseries &lt;- ts(meanStepsInterval$AvgSteps, start = 0, end = 288) plot.ts(meanStepstimeseries, xlab = &quot;Time in 5 minute intervals&quot;)</code></p>
 </div>
-</div>
-<div id="httpa-little-book-of-r-for-time-series.readthedocs.orgenlatestsrctimeseries.html" class="section level1">
-<h1><a href="http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html">http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html</a></h1>
-<p>meanStepstimeseries &lt;- ts(meanStepsInterval$AvgSteps, start = 0, end = 288) plot.ts(meanStepstimeseries, xlab = “Time in 5 minute intervals”)</p>
-<p>```</p>
 <div id="imputing-missing-values" class="section level2">
 <h2>Imputing missing values</h2>
-<p>```{r} # Missing Values</p>
-<p>Y &lt;- sapply(X, function(x) sum(is.na(x))) #Y Y &lt;- Y[Y&gt;0] # To count only missing values #Y</p>
-<p>mean(is.na(X<span class="math">\(steps)) count &lt;- table(is.na(X\)</span>steps)) count barplot(count) ```</p>
+<p><code>{r} # Missing Values Y &lt;- sapply(X, function(x) sum(is.na(x))) #Y Y &lt;- Y[Y&gt;0] # To count only missing values #Y mean(is.na(X$steps)) count &lt;- table(is.na(X$steps)) count barplot(count)</code></p>
 <div id="here-are-the-observations-with-missing-steps-values" class="section level3">
 <h3>Here are the observations with missing steps values</h3>
-<p>```{r} Z &lt;- X[is.na(X$steps), ] #Z</p>
-</div>
-</div>
-</div>
-<div id="tailx-checking-the-later-rows-of-x-to-make-sure-that-the-subetting-worked" class="section level1">
-<h1>tail(X) # checking the later rows of X to make sure that the subetting worked</h1>
-<p>```</p>
+<p><code>{r} Z &lt;- X[is.na(X$steps), ] #Z #tail(X)  # checking the later rows of X to make sure that the subetting worked</code></p>
 <div id="further-recoding-of-the-data" class="section level4">
 <h4>Further Recoding of the data</h4>
-<p>```{r} library(lubridate) #month(Z<span class="math">\(date) # Used to test the function #weekdays(Z\)</span>date) # Used to test the function</p>
+<p><code>{r} library(lubridate) #month(Z$date) # Used to test the function #weekdays(Z$date) # Used to test the function #The missing values do not &quot;seem&quot; to be related to a day of the week #Except there are no missing values for Tuesdays</code></p>
 </div>
-</div>
-<div id="the-missing-values-do-not-seem-to-be-related-to-a-day-of-the-week" class="section level1">
-<h1>The missing values do not “seem” to be related to a day of the week</h1>
-</div>
-<div id="except-there-are-no-missing-values-for-tuesdays" class="section level1">
-<h1>Except there are no missing values for Tuesdays</h1>
-<p>```</p>
 <div id="missing-values-by-day-of-the-week" class="section level4">
 <h4>Missing values by day of the week</h4>
 <p><code>{r} table(weekdays(Z$date))</code></p>
@@ -160,28 +137,16 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h4>Compare with the count of observations by day of the week</h4>
 <p><code>{r} table(weekdays(X$date))</code></p>
 </div>
+</div>
 <div id="mean-imputation" class="section level3">
 <h3>Mean imputation</h3>
-<p>```{r} #W &lt;- X #Needs more work</p>
-<p>library(Amelia) #a.out &lt;- amelia(x=W, m=1, …) # Need more work with Amelia</p>
-<p>mean.imp &lt;- function (dat){ missing &lt;- is.na(dat) n.missing &lt;- sum(missing) dat.obs &lt;- dat[!missing] imputed &lt;- dat imputed[missing] &lt;- mean(dat.obs, n.missing, replace=TRUE) return(imputed) }</p>
-<p>X.imp &lt;- mean.imp(X<span class="math">\(steps) X\)</span>steps2 &lt;- X.imp</p>
-<p>```</p>
+<p><code>{r} #W &lt;- X #Needs more work library(Amelia) #a.out &lt;- amelia(x=W, m=1, ...) # Need more work with Amelia mean.imp &lt;- function (dat){         missing &lt;- is.na(dat)         n.missing &lt;- sum(missing)         dat.obs &lt;- dat[!missing]         imputed &lt;- dat         imputed[missing] &lt;- mean(dat.obs, n.missing, replace=TRUE)         return(imputed) } X.imp &lt;- mean.imp(X$steps) X$steps2 &lt;- X.imp</code></p>
+</div>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
-<p>```{r} #Create weekday and weekend labels or the days in the dataset</p>
-<p>X<span class="math">\(days &lt;- as.factor(weekdays(X\)</span>date))</p>
-<p>X<span class="math">\(weekdays &lt;- X\)</span>days</p>
-<p>from1 &lt;- c(“Saturday”, “Sunday”) to1 &lt;- c(“weekend”, “weekend”)</p>
-<p>from2 &lt;- c(“Monday”, “Tuesday”, “Wednesday”, “Thursday”, “Friday”) to2 &lt;- c(“weekday”, “weekday”, “weekday”, “weekday”, “weekday”)</p>
-<p>gsub1 &lt;- function(pattern, replacement, x){ for(i in 1:length(pattern)) x &lt;- gsub(pattern[i], replacement[i], x) x }</p>
-<p>X<span class="math">\(weekdays &lt;- gsub1(from1, to1, X\)</span>weekdays) X<span class="math">\(weekdays &lt;- gsub1(from2, to2, X\)</span>weekdays)</p>
-<p>X<span class="math">\(weekdays &lt;- as.factor(X\)</span>weekdays) #str(X)</p>
-<p>library(lattice)</p>
-<p>meanStepsIntDay &lt;- na.omit(ddply(X, c(“interval”, “weekdays”), summarise, AvgSteps = mean(steps2, na.rm=TRUE))) #meanStepsIntDay</p>
-<p>xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.8, col=“red”), xlim = c(0, range(X$interval)), layout = c(1,2), type= “l”, xlab = “Interval”, ylab = “Average Number of Steps”)</p>
-<p>```</p>
+<p>```{r} #Create weekday and weekend labels or the days in the dataset X<span class="math">\(days &lt;- as.factor(weekdays(X\)</span>date)) X<span class="math">\(weekdays &lt;- X\)</span>days from1 &lt;- c(“Saturday”, “Sunday”) to1 &lt;- c(“weekend”, “weekend”) from2 &lt;- c(“Monday”, “Tuesday”, “Wednesday”, “Thursday”, “Friday”) to2 &lt;- c(“weekday”, “weekday”, “weekday”, “weekday”, “weekday”) gsub1 &lt;- function(pattern, replacement, x){ for(i in 1:length(pattern)) x &lt;- gsub(pattern[i], replacement[i], x) x } X<span class="math">\(weekdays &lt;- gsub1(from1, to1, X\)</span>weekdays) X<span class="math">\(weekdays &lt;- gsub1(from2, to2, X\)</span>weekdays) X<span class="math">\(weekdays &lt;- as.factor(X\)</span>weekdays) #str(X)</p>
+<p>library(lattice) meanStepsIntDay &lt;- na.omit(ddply(X, c(“interval”, “weekdays”), summarise, AvgSteps = mean(steps2, na.rm=TRUE))) #meanStepsIntDay xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.8, col=“red”), xlim = c(0, range(X$interval)), layout = c(1,2), type= “l”, xlab = “Interval”, ylab = “Average Number of Steps”) ```</p>
 </div>
 </div>
 <div id="the-end" class="section level1">

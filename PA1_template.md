@@ -1,3 +1,6 @@
+---
+output: html_document
+---
 # Reproducible Research: Peer Assessment 1
 
 Cos D. Fi
@@ -28,7 +31,6 @@ X$interval <- as.numeric(X$interval)
 
 #X$interval = as.factor(X$interval)
 #summary(X$interval)
-
 ```
 
 ## What is mean and median number of steps taken per day?
@@ -42,9 +44,7 @@ totalStepsDay <- na.omit(ddply(X, "date", summarise, TotalSteps = sum(steps, na.
 ### Histogram of Total Steps per Day
 
 ```{r}
-
 hist(totalStepsDay$TotalSteps, breaks = 10, main = ("Histogram of Total Steps per Day"), xlab = "Total Steps per Day", ylab = "Number of Days", col = "lightblue", border = "pink")
-
 ```
 
 ```{r}
@@ -79,30 +79,25 @@ maxAvgStepsInterval <- ddply(meanStepsInterval, "AvgSteps", function(dat) dat[or
 
 ```{r}
 maxAvgStepsInterval[nrow(maxAvgStepsInterval), ]
-
 ```
 
 ## Here we visualize the avearge daily activity pattern
 
 ```{r}
 plot(meanStepsInterval, type="l")
-
 #http://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/src/timeseries.html
 meanStepstimeseries <- ts(meanStepsInterval$AvgSteps, start = 0, end = 288)
 plot.ts(meanStepstimeseries, xlab = "Time in 5 minute intervals")
-
 ```
 
 ## Imputing missing values
 
 ```{r}
 # Missing Values
-
 Y <- sapply(X, function(x) sum(is.na(x)))
 #Y
 Y <- Y[Y>0] # To count only missing values
 #Y
-
 mean(is.na(X$steps))
 count <- table(is.na(X$steps))
 count
@@ -114,7 +109,6 @@ barplot(count)
 ```{r}
 Z <- X[is.na(X$steps), ]
 #Z
-
 #tail(X)  # checking the later rows of X to make sure that the subetting worked
 ```
 
@@ -124,7 +118,6 @@ Z <- X[is.na(X$steps), ]
 library(lubridate)
 #month(Z$date) # Used to test the function
 #weekdays(Z$date) # Used to test the function
-
 #The missing values do not "seem" to be related to a day of the week
 #Except there are no missing values for Tuesdays
 ```
@@ -144,10 +137,8 @@ table(weekdays(X$date))
 ```{r}
 #W <- X
 #Needs more work
-
 library(Amelia)
 #a.out <- amelia(x=W, m=1, ...) # Need more work with Amelia
-
 mean.imp <- function (dat){
         missing <- is.na(dat)
         n.missing <- sum(missing)
@@ -156,49 +147,34 @@ mean.imp <- function (dat){
         imputed[missing] <- mean(dat.obs, n.missing, replace=TRUE)
         return(imputed)
 }
-
 X.imp <- mean.imp(X$steps)
 X$steps2 <- X.imp
-
-
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ```{r}
 #Create weekday and weekend labels or the days in the dataset
-
 X$days <- as.factor(weekdays(X$date))
-
 X$weekdays <- X$days
-
 from1 <- c("Saturday", "Sunday")
 to1 <- c("weekend", "weekend")
-
 from2 <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 to2 <- c("weekday", "weekday", "weekday", "weekday", "weekday")
-
-
-
 gsub1 <- function(pattern, replacement, x){
         for(i in 1:length(pattern))
                 x <- gsub(pattern[i], replacement[i], x)
         x
 }
-
 X$weekdays <- gsub1(from1, to1, X$weekdays)
 X$weekdays <- gsub1(from2, to2, X$weekdays)
-
 X$weekdays <- as.factor(X$weekdays)
 #str(X)
 
 library(lattice)
-
 meanStepsIntDay <- na.omit(ddply(X, c("interval", "weekdays"), summarise, AvgSteps = mean(steps2, na.rm=TRUE)))
 #meanStepsIntDay
-
 xyplot(AvgSteps ~ interval | weekdays, data = meanStepsIntDay, scales=list(cex=.8, col="red"), xlim = c(0, range(X$interval)), layout = c(1,2), type= "l", xlab = "Interval", ylab = "Average Number of Steps")
-
 ```
 
 # The End
