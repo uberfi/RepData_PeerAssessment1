@@ -1,9 +1,15 @@
 ---
-title: Reproducible Research Peer Assessment 1 for Data Science Track (JHS)
-author: Cos D. Fi
-date: September 2014
-output: html_document
+title: "Reproducible Research Peer Assessment 1 for Data Science Track (JHS)"
+author: "Cos D. Fi"
+date: "September 2014"
+output:
+  html_document:
+    keep_md: yes
+    number_sections: yes
 ---
+
+
+## Open this file in GitHub for Mac or Windows
 
 #### Loading and preprocessing the data
 ```{r}
